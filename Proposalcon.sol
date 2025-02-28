@@ -10,6 +10,7 @@ pragma solidity ^0.8.18;
  *      - Records the current state of a proposal (passed or failed).
  *      - Maintains a history of all proposals.
  *      - Ensures users cannot vote more than once.
+ *      - Allows the creation of new proposals with a title, description, and a required vote count.
  */
 contract ProposalContract {
 
@@ -25,4 +26,19 @@ contract ProposalContract {
     }
 
     mapping(uint256 => Proposal) proposal_history; // Recordings of previous proposals
+    uint256 counter; // Counter to track the proposal IDs
+
+    /**
+     * @dev Creates a new proposal.
+     * @param _title Title of the proposal.
+     * @param _description Description of the proposal.
+     * @param _total_vote_to_end Total number of votes required to end the proposal.
+     *
+     * This function increments the counter and stores a new proposal
+     * in the proposal history mapping with the given details.
+     */
+    function create(string calldata _title, string calldata _description, uint256 _total_vote_to_end) external {
+        counter += 1;
+        proposal_history[counter] = Proposal(_title, _description, 0, 0, 0, _total_vote_to_end, false, true);
+    }
 }
